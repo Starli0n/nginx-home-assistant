@@ -1,0 +1,21 @@
+version: '2.1'
+
+services:
+
+  home-assistant:
+    container_name: ${HOME_ASSISTANT_CONTAINER}
+    image: homeassistant/home-assistant:${TAG}
+    ports:
+      - '${HTTP_PORT}:8123'
+    environment:
+      VIRTUAL_HOST: ${HOME_ASSISTANT_HOSTNAME}
+      LETSENCRYPT_HOST: ${HOME_ASSISTANT_HOSTNAME}
+      LETSENCRYPT_EMAIL: ${HOME_ASSISTANT_CONTAINER}@no-reply.com
+    volumes:
+      - ./home-assistant:/config
+    restart: always
+
+networks:
+  default:
+    external:
+      name: ${NGINX_PROXY_NET}
